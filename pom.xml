@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>spring-boot-crud-mvc</artifactId>
+	<artifactId>spring-web-security</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spring-boot-crud-mvc</name>
-	<description>CRUD app with Spring Boot</description>
+	<name>spring-web-security</name>
+	<description>CRUD app with Spring Security</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -52,6 +52,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 	</dependencies>
 
