@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+    <link href="/static/css/styles.css" rel="stylesheet" />
+</head>
+<body>
+    <h1>Users</h1>
+    <table class="users-table">
+        <thead>
+        <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td  th:text="${user.getUsername()}"></td>
+            <td  th:text="${user.getContactInfo().getEmail()}"></td>
+            <td  th:text="${user.getContactInfo().getPhone()}"></td>
+            <td>
+<!--                <a th:href="@{/users/delete(id=${user.getId()})}">Delete</a>-->
+                <form method="POST" th:action="@{/users/delete}">
+                    <button type="submit" th:name="id" th:value="${user.getId()}" class="link-button">Delete</button>
+                </form>
+            </td>
+            <td>
+                <a th:href="@{/users/update(id=${user.getId()})}">Edit</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+        <h2>Add new user</h2>
+        <form th:method="POST" th:action="@{/users}" th:object="${newUser}" class="add-user-form">
+            <label for="username">Username</label>
+            <input type="text" th:field="*{username}" id="username" />
+
+            <label for="email">Email</label>
+            <input type="text" th:field="*{contactInfo.email}"  id="email" />
+
+            <label for="phone">Phone number</label>
+            <input type="text" th:field="*{contactInfo.phone}"  id="phone" />
+
+            <input type="submit" value="Add user">
+
+        </form>
+
+</body>
+</html>
