@@ -1,6 +1,7 @@
 package com.example.spring_boot_crud_mvc.config;
 
 import com.example.spring_boot_crud_mvc.service.UserDetailsServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -15,6 +16,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
+
+    @Autowired
+    private SuccessUserHandler successUserHandler;
 
 //    @Bean
 //    UserDetailsService userDetailsService() {
@@ -39,11 +43,15 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .formLogin(Customizer.withDefaults())
+                .formLogin(login -> login
+                        .usernameParameter("username")
+                        .successHandler(successUserHandler)
+                        .permitAll())
                 .authorizeHttpRequests(authorize -> authorize
-//                        .requestMatchers("/").hasAnyRole("ADMIN", "USER")
                         .requestMatchers("/").authenticated()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/user").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/users").hasAnyRole("ADMIN")
+//                        .anyRequest().authenticated()
                 )
                 .logout(Customizer.withDefaults());
 

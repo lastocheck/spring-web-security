@@ -50,4 +50,5 @@ public class UsersController {
         userService.update(user);
         return "redirect:/users";
     }
+
 }
