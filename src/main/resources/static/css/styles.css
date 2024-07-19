@@ -5,14 +5,11 @@
 th,
 td {
     padding: 5px;
+    text-align: center;
 }
 
 .update-user-form label {
     display: inline-block;
     width: 100px;
     margin-bottom: 8px;
-}
-
-h1 {
-    color: red;
 }

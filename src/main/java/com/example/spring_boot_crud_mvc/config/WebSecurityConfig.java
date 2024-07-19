@@ -49,6 +49,7 @@ public class WebSecurityConfig {
                         .successHandler(successUserHandler)
                         .permitAll())
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/css/**").permitAll()
                         .requestMatchers("/").authenticated()
                         .requestMatchers("/user/**").hasAnyRole("ADMIN", "USER")
                         .requestMatchers("/admin/**").hasAnyRole("ADMIN")
