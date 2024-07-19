@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("admin/users")
@@ -40,10 +41,10 @@ public class UsersController {
     }
 
     @PostMapping()
-    public String addUser(@ModelAttribute("user") User user, @ModelAttribute("roles") ArrayList<Role> roles) {
-        System.out.println("saving user " + user);
-        System.out.println("with roles " + roles);
+    public String addUser(@ModelAttribute("user") User user, @RequestParam List<Integer> roleIds) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        Set<Role> roles = roleIds.stream().map(roleService::findById).collect(Collectors.toSet());
+        user.setRoles(roles);
         userService.save(user);
         return "redirect:/admin/users";
     }
