@@ -25,6 +25,15 @@
             <input type="text" th:field="*{contactInfo.phone}"  id="phone" />
         </div>
 
+        <div>
+            <label>Roles</label>
+            <div th:each="role : ${roles}">
+                <input type="checkbox" th:value="${role.id}" name="roleIds" th:checked="${#lists.contains(user.roles, role)}"/>
+                <span th:text="${role.name}">role name</span><br/>
+            </div>
+
+        </div>
+
         <input type="submit" value="Save">
 
     </form>

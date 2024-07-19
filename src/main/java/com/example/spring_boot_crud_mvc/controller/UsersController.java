@@ -59,13 +59,16 @@ public class UsersController {
 
     @GetMapping("/update")
     public String getUpdatePage(@RequestParam("id") int id, Model model) {
+        model.addAttribute("roles", roleService.findAll());
         model.addAttribute("user", userService.findById(id));
         return "users/update";
     }
 
     @PostMapping("/update")
-    public String updateUser(@ModelAttribute("user") User newUserDetails) {
+    public String updateUser(@ModelAttribute("user") User newUserDetails, @RequestParam List<Integer> roleIds) {
         User user = userService.findById(newUserDetails.getId());
+        Set<Role> roles = roleIds.stream().map(roleService::findById).collect(Collectors.toSet());
+        user.setRoles(roles);
         user.setUsername(newUserDetails.getUsername());
         user.setContactInfo(newUserDetails.getContactInfo());
         userService.update(user);
