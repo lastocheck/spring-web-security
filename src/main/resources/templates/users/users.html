@@ -14,6 +14,7 @@
             <th scope="col">Username</th>
             <th scope="col">Email</th>
             <th scope="col">Phone</th>
+            <th scope="col">Roles</th>
             <th scope="col"></th>
             <th scope="col"></th>
         </tr>
@@ -23,6 +24,7 @@
             <td  th:text="${user.getUsername()}"></td>
             <td  th:text="${user.getContactInfo().getEmail()}"></td>
             <td  th:text="${user.getContactInfo().getPhone()}"></td>
+            <td  th:text="${#strings.substring(user.getRoles(), 1, user.getRoles().toString().length() - 1)}"></td>
             <td>
 <!--                <a th:href="@{/users/delete(id=${user.getId()})}">Delete</a>-->
                 <form method="POST" th:action="@{/admin/users/delete}">
