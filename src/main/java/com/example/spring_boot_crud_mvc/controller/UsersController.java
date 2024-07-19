@@ -1,20 +1,24 @@
 package com.example.spring_boot_crud_mvc.controller;
 
 import com.example.spring_boot_crud_mvc.model.User;
+import com.example.spring_boot_crud_mvc.repository.UserRepository;
 import com.example.spring_boot_crud_mvc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("users")
+@RequestMapping("admin/users")
 public class UsersController {
     private final UserService userService;
 
-    @Autowired
-    public UsersController(UserService userService) {
+    private final PasswordEncoder passwordEncoder;
+
+    public UsersController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping()
@@ -27,6 +31,7 @@ public class UsersController {
     @PostMapping()
     public String addUser(@ModelAttribute("user") User user) {
         System.out.println("saving user " + user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.save(user);
         return "redirect:/users";
     }
@@ -46,7 +51,10 @@ public class UsersController {
     }
 
     @PostMapping("/update")
-    public String updateUser(@ModelAttribute("user") User user) {
+    public String updateUser(@ModelAttribute("user") User newUserDetails) {
+        User user = userService.findById(newUserDetails.getId());
+        user.setUsername(newUserDetails.getUsername());
+        user.setContactInfo(newUserDetails.getContactInfo());
         userService.update(user);
         return "redirect:/users";
     }

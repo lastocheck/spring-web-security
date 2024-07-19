@@ -20,27 +20,28 @@ public class WebSecurityConfig {
     @Autowired
     private SuccessUserHandler successUserHandler;
 
-//    @Bean
-//    UserDetailsService userDetailsService() {
-//        return new UserDetailsServiceImpl();
-//    }
-//
-//    @Bean
-//    BCryptPasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
-//
-//    @Bean
-//    DaoAuthenticationProvider authenticationProvider() {
-//        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-//        authProvider.setUserDetailsService(userDetailsService());
-//        authProvider.setPasswordEncoder(passwordEncoder());
-//
-//        return authProvider;
-//    }
+    @Bean
+    UserDetailsService userDetailsService() {
+        return new UserDetailsServiceImpl();
+    }
+
+    @Bean
+    BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setPasswordEncoder(passwordEncoder());
+
+        return authProvider;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.authenticationProvider(authenticationProvider());
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(login -> login
@@ -49,8 +50,8 @@ public class WebSecurityConfig {
                         .permitAll())
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/").authenticated()
-                        .requestMatchers("/user").hasAnyRole("ADMIN", "USER")
-                        .requestMatchers("/users").hasAnyRole("ADMIN")
+                        .requestMatchers("/user/**").hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/admin/**").hasAnyRole("ADMIN")
 //                        .anyRequest().authenticated()
                 )
                 .logout(Customizer.withDefaults());

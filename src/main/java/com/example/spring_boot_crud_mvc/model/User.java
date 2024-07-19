@@ -52,6 +52,10 @@ public class User implements UserDetails {
         this.username = username;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public ContactInfo getContactInfo() {
         return contactInfo;
     }
@@ -67,6 +71,14 @@ public class User implements UserDetails {
                ", username='" + username + '\'' +
                ", contactInfo=" + contactInfo +
                '}';
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
     }
 
     @Override
