@@ -2,17 +2,13 @@ package com.example.spring_boot_crud_mvc.controller;
 
 import com.example.spring_boot_crud_mvc.model.Role;
 import com.example.spring_boot_crud_mvc.model.User;
-import com.example.spring_boot_crud_mvc.repository.UserRepository;
 import com.example.spring_boot_crud_mvc.service.RoleService;
 import com.example.spring_boot_crud_mvc.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
