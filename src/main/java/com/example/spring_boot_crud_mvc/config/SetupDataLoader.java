@@ -42,7 +42,7 @@ public class SetupDataLoader implements
             return;
         }
 
-        //create user and admin roles if they don't exist and return them
+        //create user and admin roles if they don't exist and save them
         List<Role> roles = Stream.of("ROLE_ADMIN", "ROLE_USER").map(roleString -> {
             Role role = roleService.findByName(roleString);
             if (role != null) {
@@ -54,12 +54,20 @@ public class SetupDataLoader implements
             return newRole;
         }).toList();
 
-        User adminUser = new User("admin", new ContactInfo("admin@test.com", "adminphone"));
-        adminUser.addRole(roles.get(0));
-        adminUser.setPassword(passwordEncoder.encode("12345"));
-        User regularUser =  new User("user", new ContactInfo("user@test.com", "userphone"));
-        regularUser.addRole(roles.get(1));
-        regularUser.setPassword(passwordEncoder.encode("12345"));
+
+        User adminUser = userService.findByUsername("admin").orElseGet(() -> {
+            User newAdmin = new User("admin", new ContactInfo("admin@test.com", "adminphone"));
+            newAdmin.addRole(roles.get(0));
+            newAdmin.setPassword(passwordEncoder.encode("12345"));
+            return newAdmin;
+        });
+
+        User regularUser = userService.findByUsername("user").orElseGet(() -> {
+            User newUser =  new User("user", new ContactInfo("user@test.com", "userphone"));
+            newUser.addRole(roles.get(1));
+            newUser.setPassword(passwordEncoder.encode("12345"));
+            return newUser;
+        });
 
         userService.saveAll(List.of(adminUser, regularUser));
 

@@ -53,7 +53,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/user/**").hasAnyRole("ADMIN", "USER")
                         .requestMatchers("/admin/**").hasAnyRole("ADMIN")
-//                        .anyRequest().authenticated()
+                        .anyRequest().authenticated()
                 )
                 .logout(Customizer.withDefaults());
 
